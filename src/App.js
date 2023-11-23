@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
-function App() {
+export default function App() {
   const [data, setData] = useState({});
   const [location, setLocation] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [error, setError] = useState("");
 
   const KEY = 'c246e7ccc7c4a6223ab7661ddb69e82d';
 
@@ -17,6 +17,11 @@ function App() {
         const data = await res.json();
         console.log(data);
         setData(data);
+
+        if (location.length < 3) {
+          setData({});
+          return;
+        }
       }
       fetchCurrentWeather();
     },
@@ -24,18 +29,64 @@ function App() {
   );
 
   return (
-    <div className="app">
-      <div className="search">
-        <input
-          value={location}
-          onChange={(event) => setLocation(event.target.value)}
-          placeholder="Enter Location"
-          type="text"
-        />
+    <>
+      <div className="app">
+        <SearchBar>
+          <Search location={location} setLocation={setLocation} />
+        </SearchBar>
+        <Main>
+          <WeatherContainer data={data} />
+        </Main>
       </div>
+    </>
+  );
+}
+
+const SearchBar = ({ children }) => {
+  return <nav className="search-bar">{children}</nav>;
+};
+
+const Search = ({ location, setLocation }) => {
+  const inputEl = useRef(null);
+
+  useEffect(
+    function () {
+      function callback(e) {
+        if (document.activeElement === inputEl.current) return;
+        if (e.code === 'Enter') {
+          inputEl.current.focus();
+          setLocation('');
+        }
+      }
+
+      document.addEventListener('keydown', callback);
+      return () => document.addEventListener('keydown', callback);
+    },
+    [setLocation]
+  );
+
+  return (
+    <input
+      className="search"
+      type="text"
+      placeholder="Enter Location"
+      value={location}
+      onChange={(e) => setLocation(e.target.value)}
+      ref={inputEl}
+    />
+  );
+};
+
+const Main = ({ children }) => {
+  return <main className="main">{children}</main>;
+};
+
+const WeatherContainer = ({ data }) => {
+  return (
+    <>
       <div className="container">
         <div className="current-weather">
-          <div className="location">
+          <div className="a">
             <p>{data.name}</p>
           </div>
           <div className="temp">
@@ -67,8 +118,6 @@ function App() {
           </div>
         )}
       </div>
-    </div>
+    </>
   );
-}
-
-export default App;
+};

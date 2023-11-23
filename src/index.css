@@ -21,17 +21,6 @@ h1 {
   font-size: 6rem;
 }
 
-/* .app {
-  background-color: rgba(0, 0, 0, 0.4);
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100vh;
-  width: 100%;
-  position: relative;
-} */
-
 .app {
   background-color: rgba(0, 0, 0, 0.4);
   color: #fff;
@@ -54,12 +43,12 @@ h1 {
   z-index: -1;
 }
 
-.app .search {
+.search {
   text-align: center;
   padding: 1rem;
 }
 
-.app input {
+input {
   padding: 0.7rem 1.5rem;
   font-size: 1.2rem;
   border-radius: 25px;
@@ -70,6 +59,10 @@ h1 {
 
 ::placeholder {
   color: #f8f8f8;
+}
+
+.search-bar {
+  padding: 2rem 0;
 }
 
 .container {
