@@ -3,23 +3,38 @@ import React, { useState, useEffect, useRef } from 'react';
 export default function App() {
   const [data, setData] = useState({});
   const [location, setLocation] = useState('');
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const KEY = 'c246e7ccc7c4a6223ab7661ddb69e82d';
 
   useEffect(
     function () {
       async function fetchCurrentWeather() {
-        const res = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=imperial&appid=${KEY}`
-        );
-        const data = await res.json();
-        console.log(data);
-        setData(data);
+        try {
+          setIsLoading(true);
+          setError('');
 
+          const res = await fetch(
+            `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=imperial&appid=${KEY}`
+          );
+
+          if (!res.ok)
+            throw new Error('Something went wrong with fetching weather data');
+
+          const data = await res.json();
+
+          // console.log(data);
+          setData(data);
+        } catch (err) {
+          console.log(err.message);
+          setError(err.message);
+        } finally {
+          setIsLoading(false);
+        }
         if (location.length < 3) {
           setData({});
+          setError('');
           return;
         }
       }
@@ -35,10 +50,24 @@ export default function App() {
           <Search location={location} setLocation={setLocation} />
         </SearchBar>
         <Main>
-          <WeatherContainer data={data} />
+          {isLoading && <Loader />}
+          {!isLoading && !error && <WeatherContainer data={data} />}
+          {error && <ErrorMessage message={error} />}
         </Main>
       </div>
     </>
+  );
+}
+
+function Loader() {
+  return <p className="loader">Loading...</p>;
+}
+
+function ErrorMessage({ message }) {
+  return (
+    <p className="error">
+      <span>⛔️</span> {message}
+    </p>
   );
 }
 
