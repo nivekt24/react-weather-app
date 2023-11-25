@@ -1,53 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
+import { useCurrentWeather } from './useCurrentWeather';
+import { useKey } from './useKey';
+
+// const KEY = 'c246e7ccc7c4a6223ab7661ddb69e82d';
 
 export default function App() {
-  const [data, setData] = useState({});
   const [location, setLocation] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-
-  const KEY = 'c246e7ccc7c4a6223ab7661ddb69e82d';
-
-  useEffect(
-    function () {
-      const controller = new AbortController();
-
-      async function fetchCurrentWeather() {
-        try {
-          setIsLoading(true);
-          setError('');
-
-          const res = await fetch(
-            `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=imperial&appid=${KEY}`,
-            { signal: controller.signal }
-          );
-
-          if (!res.ok)
-            throw new Error('Something went wrong with fetching weather data');
-
-          const data = await res.json();
-
-          // console.log(data);
-          setData(data);
-          setError('');
-        } catch (err) {
-          if (err.name !== 'AbortError') {
-            console.log(err.message);
-            setError(err.message);
-          }
-        } finally {
-          setIsLoading(false);
-        }
-        if (location.length < 3) {
-          setData({});
-          setError('');
-          return;
-        }
-      }
-      fetchCurrentWeather();
-    },
-    [location]
-  );
+  const { data, isLoading, error } = useCurrentWeather(location);
 
   return (
     <>
@@ -84,21 +43,11 @@ const SearchBar = ({ children }) => {
 const Search = ({ location, setLocation }) => {
   const inputEl = useRef(null);
 
-  useEffect(
-    function () {
-      function callback(e) {
-        if (document.activeElement === inputEl.current) return;
-        if (e.code === 'Enter') {
-          inputEl.current.focus();
-          setLocation('');
-        }
-      }
-
-      document.addEventListener('keydown', callback);
-      return () => document.addEventListener('keydown', callback);
-    },
-    [setLocation]
-  );
+  useKey('Enter', function () {
+    if (document.activeElement === inputEl.current) return;
+    inputEl.current.focus();
+    setLocation('');
+  });
 
   return (
     <input
