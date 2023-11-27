@@ -77,7 +77,16 @@ const WeatherContainer = ({ data }) => {
             {data.main ? <h1>{data.main.temp.toFixed()}°F</h1> : null}
           </div>
           <div className="description">
-            {data.weather ? <p>{data.weather[0].main}</p> : null}
+            {/* {data.weather ? <p>{data.weather[0].main}</p> : 
+            null} */}
+
+            {data.weather ? (
+              <img
+                alt="weather"
+                className="weather-icon"
+                src={`icons/${data.weather[0].icon}.png`}
+              />
+            ) : null}
           </div>
         </div>
 
