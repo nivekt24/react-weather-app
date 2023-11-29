@@ -4,7 +4,12 @@ const CurrentWeather = ({ data }) => {
       <div className="container">
         <div className="current-weather">
           <div className="a">
-            <p>{data.name}</p>
+            <p>
+              {data.name}
+              {data.sys ? <span> {data.sys.country}</span> : null}
+            </p>
+
+            {data.weather ? <p>{data.weather[0].main}</p> : null}
           </div>
           <div className="temp">
             {data.main ? <h1>{data.main.temp.toFixed()}°F</h1> : null}
