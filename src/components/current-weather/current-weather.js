@@ -2,14 +2,14 @@ const CurrentWeather = ({ data }) => {
   return (
     <>
       <div className="container">
-        <div className="current-weather">
-          <div className="a">
+        <div className="top">
+          <div className="city">
             <p>
               {data.name}
               {data.sys ? <span> {data.sys.country}</span> : null}
             </p>
 
-            {data.weather ? <p>{data.weather[0].main}</p> : null}
+            {data.weather ? <p>{data.weather[0].description}</p> : null}
           </div>
           <div className="temp">
             {data.main ? <h1>{data.main.temp.toFixed()}°F</h1> : null}
@@ -29,7 +29,7 @@ const CurrentWeather = ({ data }) => {
         </div>
 
         {data.name !== undefined && (
-          <div className="current-condition">
+          <div className="bottom">
             <div className="feels">
               {data.main ? (
                 <p className="bold">{data.main.feels_like.toFixed()}°F</p>
