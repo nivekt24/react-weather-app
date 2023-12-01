@@ -1,4 +1,12 @@
 const CurrentWeather = ({ data }) => {
+  function formatDate() {
+    const options = { month: 'long', day: 'numeric', year: 'numeric' };
+    const date = new Date();
+    return date.toLocaleDateString(undefined, options);
+  }
+
+  const formattedDate = formatDate();
+
   return (
     <>
       <div className="container">
@@ -8,16 +16,13 @@ const CurrentWeather = ({ data }) => {
               {data.name}
               {data.sys ? <span> {data.sys.country}</span> : null}
             </p>
-
-            {data.weather ? <p>{data.weather[0].description}</p> : null}
+            <p class>{data.main ? formattedDate : null}</p>
           </div>
           <div className="temp">
             {data.main ? <h1>{data.main.temp.toFixed()}°F</h1> : null}
+            {data.weather ? <p>{data.weather[0].description}</p> : null}
           </div>
           <div className="description">
-            {/* {data.weather ? <p>{data.weather[0].main}</p> : 
-              null} */}
-
             {data.weather ? (
               <img
                 alt="weather"
