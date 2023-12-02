@@ -10,28 +10,45 @@ const CurrentWeather = ({ data }) => {
   return (
     <>
       <div className="container">
-        <div className="top">
-          <div className="city">
-            <p>
-              {data.name}
-              {data.sys ? <span> {data.sys.country}</span> : null}
-            </p>
-            <p class>{data.main ? formattedDate : null}</p>
+        {data.name !== undefined && (
+          <div className="top">
+            <div className="city">
+              <p>
+                {data.name}
+                {data.sys ? <span> {data.sys.country}</span> : null}
+              </p>
+              <span>{data.main ? formattedDate : null}</span>
+            </div>
+
+            <div className="temp">
+              {data.main ? <h1>{data.main.temp.toFixed()}°F</h1> : null}
+              {data.weather ? <p>{data.weather[0].description}</p> : null}
+            </div>
+
+            <div className="description">
+              {data.weather ? (
+                <img
+                  alt="weather"
+                  className="weather-icon"
+                  src={`icons/${data.weather[0].icon}.png`}
+                />
+              ) : null}
+
+              <div className="min-max">
+                {data.weather ? (
+                  <p className="min-max_item">
+                    H:{data.main.temp_max.toFixed()}
+                  </p>
+                ) : null}
+                {data.weather ? (
+                  <p className="min-max_item">
+                    L:{data.main.temp_min.toFixed()}
+                  </p>
+                ) : null}
+              </div>
+            </div>
           </div>
-          <div className="temp">
-            {data.main ? <h1>{data.main.temp.toFixed()}°F</h1> : null}
-            {data.weather ? <p>{data.weather[0].description}</p> : null}
-          </div>
-          <div className="description">
-            {data.weather ? (
-              <img
-                alt="weather"
-                className="weather-icon"
-                src={`icons/${data.weather[0].icon}.png`}
-              />
-            ) : null}
-          </div>
-        </div>
+        )}
 
         {data.name !== undefined && (
           <div className="bottom">

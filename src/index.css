@@ -92,32 +92,38 @@ input {
   justify-content: space-evenly;
 }
 
-.app .top {
-  width: 100%;
-  margin: 1rem auto;
-}
-
-.app .description {
-  position: relative;
-  transform-origin: 0 0;
-}
-
-.weather-icon {
-  position: absolute;
-  right: 0;
-  transform: translateY(-200px);
-  /* transform: rotate(269deg); */
-}
-
+.app .top,
 .app .bottom {
-  display: flex;
-  /* justify-content: space-evenly; */
-  text-align: center;
   width: 100%;
   margin: 1rem auto;
   padding: 1rem;
   border-radius: 12px;
   background-color: rgba(255, 255, 255, 0.2);
+}
+
+.app .description {
+}
+
+.min-max {
+  display: flex;
+  justify-content: flex-end;
+  transform: translateY(-60px);
+}
+
+.min-max_item {
+  padding-left: 10px;
+}
+
+.weather-icon {
+  position: absolute;
+  right: 0;
+  padding: 20px;
+  transform: translateY(-200px);
+}
+
+.app .bottom {
+  display: flex;
+  text-align: center;
 }
 
 .app .bottom p {
