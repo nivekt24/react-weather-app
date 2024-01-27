@@ -4,7 +4,7 @@ import { useKey } from '../../hooks/useKey';
 const Search = ({ location, setLocation }) => {
   const inputEl = useRef(null);
 
-  useKey('Enter', function () {
+  useKey('Enter', () => {
     if (document.activeElement === inputEl.current) return;
     inputEl.current.focus();
     setLocation('');

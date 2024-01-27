@@ -21,7 +21,7 @@ export default function App() {
         </SearchBar>
         <Main>
           {isLoading && <Loader />}
-          {!isLoading && !error && <CurrentWeather data={data} />}
+          {!isLoading && !error ? <CurrentWeather data={data} /> : null}
           {error && <ErrorMessage message={error} />}
         </Main>
       </div>
